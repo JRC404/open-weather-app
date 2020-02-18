@@ -12,7 +12,7 @@ const getWeather = async () => {
         json: true
     })
 
-    console.log(data.body)
+    console.log(data.body);
 }
 
-getWeather()
+getWeather();
