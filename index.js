@@ -1,23 +1,51 @@
-const request = require('request'); // npm i request
+const express = require('express');
+const hbs = require('express-handlebars');
+const bodyParser = require('body-parser');
+const path = require('path');
 
-require('dotenv').config() // https://www.npmjs.com/package/dotenv
+const getWeather = require('./lib/getWeather')
+const app = express();
 
-const getWeather = () => {
-    request({ // https://www.npmjs.com/package/request
-        uri: `https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=${process.env.APPID}`,
-        json: true
-        // json format if true, raw data if false
-    }, (err, res) => {
-        if (err) throw err;
-        // comment what the error message is...
-        /*
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
-        Common fixes: I need to install this, that and the other
-        #1 ReferenceError: APP is not defined - APP needs to be APPID or change the const 
+app.engine('.hbs', hbs({
+    defaultLayout: 'layout',
+    extname: '.hbs'
+}));
+app.set('view engine', '.hbs');
 
-        */
-        console.log(res.body);
-    })
-}
+app.get('/', (req, res) => {
 
-getWeather();
+    // let data = await getWeather();
+    // let temp = data.main.temp;
+    res.render('index');
+});
+
+app.post('/', async (req, res) => {
+    let locationInput = req.body.location;
+    let countryCode = req.body.countryCode
+    console.log(locationInput);
+    
+
+    let data = await getWeather(locationInput, countryCode);
+    console.log(data);
+    
+    let temp = data.main.temp;
+    let humidity = data.main.humidity;
+    let location = data.name;
+
+    res.render('index', {
+        data: {
+            location,
+            temp,
+            humidity
+        }
+    });
+})
+
+app.listen(3000, () => {
+    console.log('server listening on port 3000');
+    console.log(__dirname);
+});
