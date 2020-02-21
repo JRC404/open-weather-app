@@ -4,10 +4,10 @@ Have you ever wanted to check the weather but couldn't find an application you l
 
 ## Packages to be installed
 
-> npm i install express
 
-> npm i install express-handlebars
-
-> npm i install body-parser
-
-> npm i install path
+```bash
+npm i install express
+npm i install express-handlebars
+npm i install body-parser
+npm i install path
+```
