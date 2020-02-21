@@ -23,6 +23,14 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
+app.get('/about', (req, res) => {
+    res.render('about');
+})
+
+app.get('/windSpeed', (req, res) => {
+    res.render('windSpeed');
+})
+
 app.post('/', async (req, res) => {
     let locationInput = req.body.location;
     let countryCode = req.body.countryCode
